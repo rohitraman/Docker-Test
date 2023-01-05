@@ -13,18 +13,19 @@ pipeline {
             }
         }
         
-        stage('Docker build') {
-            steps {
-                sh 'docker build -t test-hello-world .'
-            }
-        }
         stage('Docker clean') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh 'docker stop deploy-hello-world'
                     sh 'docker rm deploy-hello-world'
+                    sh 'docker rmi test-hello-world'
                 }
                 
+            }
+        }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t test-hello-world .'
             }
         }
         stage('Docker run') {
