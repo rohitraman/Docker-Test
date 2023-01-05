@@ -29,9 +29,13 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
                     sh 'docker stop deploy-hello-world'
                     sh 'docker rm deploy-hello-world'
-                    sh 'docker rename deploy-hello-world-2 deploy-hello-world'
                 }
                 
+            }
+        }
+        stage('Docker rename') {
+            steps {
+                sh 'docker rename deploy-hello-world-2 deploy-hello-world'
             }
         }
     }
