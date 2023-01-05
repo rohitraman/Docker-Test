@@ -13,9 +13,14 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Docker build') {
             steps {
-                echo 'Deploying...'
+                sh 'docker build -t test-hello-world .'
+            }
+        }
+        stage('Docker run') {
+            steps {
+                sh 'docker run -d -p 8191:8191 test-hello-world'
             }
         }
     }
