@@ -18,12 +18,6 @@ pipeline {
                 sh 'docker build -t test-hello-world .'
             }
         }
-        stage('Docker run') {
-            steps {
-                sh 'docker run -d --name=deploy-hello-world-2 -p 8192:8191 test-hello-world'
-            }
-        }
-
         stage('Docker clean') {
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
@@ -31,6 +25,11 @@ pipeline {
                     sh 'docker rm deploy-hello-world'
                 }
                 
+            }
+        }
+        stage('Docker run') {
+            steps {
+                sh 'docker run -d --name=deploy-hello-world-2 -p 8192:8191 test-hello-world'
             }
         }
         stage('Docker rename') {
